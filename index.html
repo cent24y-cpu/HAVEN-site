@@ -13,7 +13,7 @@
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <!-- Logo -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="window.location.reload()">
                 <i class="fa-solid fa-graduation-cap text-3xl text-blue-600"></i>
                 <span class="text-2xl font-bold text-gray-900">Haven <span class="text-blue-600">Academy</span></span>
             </div>
@@ -21,9 +21,7 @@
             <!-- Navigation Menu -->
             <nav class="hidden md:flex items-center space-x-6 text-gray-700 font-medium">
                 <a href="#courses" class="hover:text-blue-600 transition">Courses</a>
-                <a href="#" class="hover:text-blue-600 transition">Books</a>
-                <a href="#" class="hover:text-blue-600 transition">Skills</a>
-                <a href="#" class="hover:text-blue-600 transition">About Us</a>
+                <a href="javascript:void(0)" onclick="openSupport()" class="hover:text-blue-600 transition">Customer Support</a>
                 
                 <!-- Phone Number -->
                 <a href="tel:01763019928" class="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 font-semibold bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 transition">
@@ -32,12 +30,30 @@
                 </a>
             </nav>
 
-            <!-- Login Area -->
+            <!-- Login / Profile Area -->
             <div class="flex flex-col items-end relative">
-                <button onclick="loginWithGoogle()" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg shadow hover:bg-blue-700 transition font-semibold flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                    <span>LOGIN</span>
-                </button>        
+                <div id="authSection">
+                    <button onclick="loginWithGoogle()" class="bg-blue-600 text-white px-6 py-2.5 rounded-lg shadow hover:bg-blue-700 transition font-semibold flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>LOGIN</span>
+                    </button>    
+                </div>
+
+                <!-- Profile with 3-Dot Menu (Hidden by Default) -->
+                <div id="userProfileSection" class="hidden items-center gap-3 relative">
+                    <img id="userImg" src="" alt="Profile" class="w-10 h-10 rounded-full border-2 border-blue-600">
+                    <button onclick="toggleUserDropdown()" class="text-gray-700 text-xl p-2 hover:bg-gray-100 rounded-full">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="userDropdown" class="hidden absolute right-0 top-12 bg-white shadow-xl rounded-xl border border-gray-100 w-52 py-2 z-50">
+                        <a href="javascript:void(0)" onclick="openOrdersModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fa-solid fa-receipt mr-2 text-blue-600"></i> My Orders / Status</a>
+                        <a href="javascript:void(0)" onclick="openAdminPanel()" id="adminMenuBtn" class="hidden block px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50"><i class="fa-solid fa-user-shield mr-2"></i> Admin Panel</a>
+                        <hr class="my-1">
+                        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50"><i class="fa-solid fa-right-from-bracket mr-2"></i> Logout</button>
+                    </div>
+                </div>
                 
                 <!-- Design Badge Below Login -->
                 <div class="mt-1 flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-red-500 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm animate-pulse">
@@ -55,21 +71,18 @@
                 <span class="inline-block bg-blue-500/30 text-blue-200 border border-blue-400/30 text-xs font-semibold px-3 py-1 rounded-full mb-4">
                     🚀 সেরা লার্নিং প্ল্যাটফর্ম
                 </span>
-                
                 <h1 class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">
                     Haven Academy নিয়ে এসেছে আধুনিক টাইপভিত্তিক শেখার সুযোগ!
                 </h1>
-                
                 <p class="text-base md:text-xl text-blue-100 mb-8 max-w-2xl leading-relaxed">
                     ইন্টারনেট থেকে আয় আর স্বপ্ন নয়, এখন বাস্তব। নিজের স্কিল তৈরি করুন সেরা মেন্টরদের সাথে।
                 </p>
-                
                 <div class="flex flex-wrap justify-start gap-4">
                     <a href="#courses" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3.5 px-7 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
                         আমাদের কোর্সগুলো দেখুন
                     </a>
-                    <button class="bg-white text-gray-900 hover:bg-gray-100 font-bold py-3.5 px-7 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
-                        গুরুত্বপূর্ণ নোটিশ
+                    <button onclick="openSupport()" class="bg-white text-gray-900 hover:bg-gray-100 font-bold py-3.5 px-7 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                        সরাসরি সাপোর্ট নিন
                     </button>
                 </div>
             </div>
@@ -84,7 +97,7 @@
         </div>
     </section>
 
-    <!-- Courses Section -->
+    <!-- Dynamic Courses Section -->
     <section id="courses" class="max-w-7xl mx-auto py-16 px-4">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
@@ -93,57 +106,8 @@
             <p class="text-gray-600">আপনার পছন্দের স্কিলটি ডেভেলপ করতে নীচের কোর্স বেছে নিন</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Course Card 1 -->
-            <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="h-48 bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center text-white text-6xl">
-                        <i class="fa-solid fa-code"></i>
-                    </div>
-                    <div class="p-6">
-                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">Development</span>
-                        <h3 class="text-xl font-bold text-gray-900 mt-3 mb-2">Web Development Mastery</h3>
-                        <p class="text-gray-600 text-sm mb-4">HTML, CSS, JavaScript, React এবং ব্যাকএন্ড দিয়ে প্রোফেশনাল ওয়েবসাইট তৈরি করা শিখুন।</p>
-                    </div>
-                </div>
-                <div class="p-6 pt-0">
-                    <button onclick="openPaymentModal('Web Development Mastery', 1500)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition">এনরোল করুন</button>
-                </div>
-            </div>
-
-            <!-- Course Card 2 -->
-            <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="h-48 bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white text-6xl">
-                        <i class="fa-solid fa-palette"></i>
-                    </div>
-                    <div class="p-6">
-                        <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1 rounded-full">Design</span>
-                        <h3 class="text-xl font-bold text-gray-900 mt-3 mb-2">Professional Graphic Design</h3>
-                        <p class="text-gray-600 text-sm mb-4">Photoshop এবং Illustrator ব্যবহার করে লোগো, ব্র্যান্ডিং ও ব্যানার ডিজাইন করার দক্ষতা অর্জন করুন।</p>
-                    </div>
-                </div>
-                <div class="p-6 pt-0">
-                    <button onclick="openPaymentModal('Professional Graphic Design', 1200)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition">এনরোল করুন</button>
-                </div>
-            </div>
-
-            <!-- Course Card 3 -->
-            <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="h-48 bg-gradient-to-r from-emerald-600 to-teal-600 flex items-center justify-center text-white text-6xl">
-                        <i class="fa-solid fa-bullhorn"></i>
-                    </div>
-                    <div class="p-6">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-full">Marketing</span>
-                        <h3 class="text-xl font-bold text-gray-900 mt-3 mb-2">Digital Marketing & Freelancing</h3>
-                        <p class="text-gray-600 text-sm mb-4">Social Media Ads, SEO এবং ফ্রিল্যান্সিং মার্কেটপ্লেসে কাজ করার সেরা গাইডলাইন।</p>
-                    </div>
-                </div>
-                <div class="p-6 pt-0">
-                    <button onclick="openPaymentModal('Digital Marketing', 1000)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition">এনরোল করুন</button>
-                </div>
-            </div>
+        <div id="courseContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Dynamically Loaded Courses Will Appear Here -->
         </div>
     </section>
 
@@ -152,9 +116,9 @@
         <p>Copyright © 2026 <span class="text-white font-bold">Haven Academy</span>. All rights reserved.</p>
     </footer>
 
-    <!-- পেমেন্ট মডাল UI (Popup HTML) -->
+    <!-- Payment Modal -->
     <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl transform transition-all">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
             <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
                 <h3 class="font-bold text-lg" id="modalCourseTitle">কোর্স পেমেন্ট</h3>
                 <button onclick="closePaymentModal()" class="text-gray-400 hover:text-white text-2xl font-bold">&times;</button>
@@ -168,15 +132,9 @@
 
                 <label class="block text-sm font-medium text-gray-700 mb-2">পেমেন্ট মেথড নির্বাচন করুন:</label>
                 <div class="grid grid-cols-3 gap-2 mb-4">
-                    <button type="button" onclick="selectMethod('bkash', '01763019928')" id="tab-bkash" class="method-tab border-2 border-pink-500 bg-pink-50 text-pink-700 font-bold py-2 rounded-lg text-sm">
-                        bKash
-                    </button>
-                    <button type="button" onclick="selectMethod('nagad', '01986151894')" id="tab-nagad" class="method-tab border border-gray-200 text-gray-600 font-bold py-2 rounded-lg text-sm hover:bg-orange-50">
-                        Nagad
-                    </button>
-                    <button type="button" onclick="selectMethod('rocket', '01763019928')" id="tab-rocket" class="method-tab border border-gray-200 text-gray-600 font-bold py-2 rounded-lg text-sm hover:bg-purple-50">
-                        Rocket
-                    </button>
+                    <button type="button" onclick="selectMethod('bkash', '01763019928')" id="tab-bkash" class="method-tab border-2 border-pink-500 bg-pink-50 text-pink-700 font-bold py-2 rounded-lg text-sm">bKash</button>
+                    <button type="button" onclick="selectMethod('nagad', '01986151894')" id="tab-nagad" class="method-tab border border-gray-200 text-gray-600 font-bold py-2 rounded-lg text-sm hover:bg-orange-50">Nagad</button>
+                    <button type="button" onclick="selectMethod('rocket', '01763019928')" id="tab-rocket" class="method-tab border border-gray-200 text-gray-600 font-bold py-2 rounded-lg text-sm hover:bg-purple-50">Rocket</button>
                 </div>
 
                 <div class="bg-gray-50 border-l-4 border-slate-700 p-3 rounded text-sm mb-5">
@@ -197,13 +155,79 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Transaction ID (TrxID)</label>
                         <input type="text" id="trxId" required placeholder="Ex: 8N7A6D5C" class="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 uppercase">
-                        <span class="text-xs text-red-500 mt-1 block">* TrxID সঠিকভাবে পূরণ না করলে অর্ডার বাতিল হবে</span>
                     </div>
 
-                    <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg shadow-md transition-all">
-                        পেমেন্ট নিশ্চিত করুন
-                    </button>
+                    <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg shadow-md transition-all">পেমেন্ট নিশ্চিত করুন</button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal with 3-Min Auto Lock Preview -->
+    <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
+            <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
+                <h3 class="font-bold text-lg" id="videoModalTitle">কোর্স প্লেয়ার</h3>
+                <button onclick="closeVideoModal()" class="text-gray-400 hover:text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-4 bg-black">
+                <video id="courseVideoPlayer" controls class="w-full rounded-lg h-80 bg-black" ontimeupdate="checkVideoPreview(this)">
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support HTML video.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Orders / Status Modal -->
+    <div id="ordersModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-xl text-gray-900">My Orders / Status</h3>
+                <button onclick="closeOrdersModal()" class="text-gray-400 hover:text-black text-2xl font-bold">&times;</button>
+            </div>
+            <div id="ordersList" class="space-y-3 max-h-80 overflow-y-auto">
+                <!-- Orders dynamically rendered -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-bold text-xl text-red-600"><i class="fa-solid fa-user-shield"></i> Admin Control Panel</h3>
+                <button onclick="closeAdminPanel()" class="text-gray-400 hover:text-black text-2xl font-bold">&times;</button>
+            </div>
+
+            <!-- Customer Support Settings -->
+            <div class="mb-6 bg-blue-50 p-4 rounded-xl border border-blue-200">
+                <h4 class="font-bold text-gray-800 mb-2">Customer Support Setup</h4>
+                <div class="flex gap-2">
+                    <input type="text" id="adminWhatsappInput" placeholder="WhatsApp Number (e.g. 01763019928)" class="px-3 py-2 border rounded-lg w-full">
+                    <button onclick="saveSupportNumber()" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-lg">Save</button>
+                </div>
+            </div>
+
+            <!-- Add Course Section -->
+            <div class="mb-6 bg-gray-50 p-4 rounded-xl border">
+                <h4 class="font-bold text-gray-800 mb-3">Add New Course</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                    <input type="text" id="newCourseTitle" placeholder="Course Title" class="px-3 py-2 border rounded-lg">
+                    <input type="number" id="newCoursePrice" placeholder="Price (BDT)" class="px-3 py-2 border rounded-lg">
+                    <input type="text" id="newCourseCategory" placeholder="Category (e.g. Development)" class="px-3 py-2 border rounded-lg">
+                    <input type="text" id="newCourseThumb" placeholder="Thumbnail URL" class="px-3 py-2 border rounded-lg">
+                    <input type="text" id="newCourseVideo" placeholder="Video MP4 URL" class="px-3 py-2 border rounded-lg col-span-2">
+                </div>
+                <button onclick="addNewCourse()" class="bg-emerald-600 text-white font-bold px-5 py-2 rounded-lg">Add Course</button>
+            </div>
+
+            <!-- Order Approvals Section -->
+            <div>
+                <h4 class="font-bold text-gray-800 mb-3">Pending Orders Verification</h4>
+                <div id="adminOrdersList" class="space-y-3">
+                    <!-- Admin Orders Rendered Here -->
+                </div>
             </div>
         </div>
     </div>
@@ -212,11 +236,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
 
-    <!-- JavaScript Logic -->
+    <!-- Main Logic Script -->
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA24C0FStsPpHI9dDcJ4V5a5T5Ab2Ev4i0",
             authDomain: "haven-c410b.firebaseapp.com",
@@ -224,59 +246,153 @@
             projectId: "haven-c410b",
             storageBucket: "haven-c410b.firebasestorage.app",
             messagingSenderId: "165198745018",
-            appId: "1:165198745018:web:69e7881dcc11e957b96183",
-            measurementId: "G-H4SJ1GFZ5M"
+            appId: "1:165198745018:web:69e7881dcc11e957b96183"
         };
 
-        // Firebase Initialization
         firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-
-        // Google Provider
         const provider = new firebase.auth.GoogleAuthProvider();
 
-        // Google Login
+        let currentUser = null;
+        let userOrders = [];
+        let supportNumber = "01763019928";
+        let activeVideoCourseId = null;
+
+        // Auth Listener
+        firebase.auth().onAuthStateChanged((user) => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('userProfileSection').classList.remove('hidden');
+                document.getElementById('userProfileSection').classList.add('flex');
+                document.getElementById('userImg').src = user.photoURL || "https://via.placeholder.com/40";
+                
+                // Secret Admin Check (e.g., matching email)
+                if (user.email === "admin@haven.com" || user.email === "01763019928") {
+                    document.getElementById('adminMenuBtn').classList.remove('hidden');
+                }
+                listenToUserOrders();
+            } else {
+                document.getElementById('authSection').classList.remove('hidden');
+                document.getElementById('userProfileSection').classList.add('hidden');
+                document.getElementById('adminMenuBtn').classList.add('hidden');
+            }
+            loadCourses();
+        });
+
         function loginWithGoogle() {
-            firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                const user = result.user;
-                alert("স্বাগতম " + user.displayName + "!");
-                console.log("Logged in User:", user);
-            })
-            .catch((error) => {
-                console.error("Login Error:", error.message);
-                alert("লগইন ব্যর্থ হয়েছে: " + error.message);
+            firebase.auth().signInWithPopup(provider);
+        }
+
+        function logout() {
+            firebase.auth().signOut().then(() => window.location.reload());
+        }
+
+        function toggleUserDropdown() {
+            document.getElementById('userDropdown').classList.toggle('hidden');
+        }
+
+        // Support Option
+        function openSupport() {
+            window.open(`https://wa.me/88${supportNumber}`, '_blank');
+        }
+
+        function saveSupportNumber() {
+            const num = document.getElementById('adminWhatsappInput').value;
+            if (num) {
+                firebase.database().ref('settings/support').set(num);
+                alert("Support number updated!");
+            }
+        }
+
+        firebase.database().ref('settings/support').on('value', (s) => {
+            if (s.val()) supportNumber = s.val();
+        });
+
+        // Load Dynamic Courses
+        function loadCourses() {
+            firebase.database().ref('courses').on('value', (snapshot) => {
+                const container = document.getElementById('courseContainer');
+                container.innerHTML = '';
+                const data = snapshot.val();
+
+                if (!data) {
+                    // Default Initial Courses if Database is Empty
+                    const defaultCourses = {
+                        c1: { title: "Web Development Mastery", price: 1500, category: "Development", thumb: "https://images.unsplash.com/photo-1587620962725-abab7fe55159", video: "https://www.w3schools.com/html/mov_bbb.mp4" },
+                        c2: { title: "Professional Graphic Design", price: 1200, category: "Design", thumb: "https://images.unsplash.com/photo-1626785774573-4b799315345d", video: "https://www.w3schools.com/html/mov_bbb.mp4" }
+                    };
+                    firebase.database().ref('courses').set(defaultCourses);
+                    return;
+                }
+
+                Object.keys(data).forEach(id => {
+                    const c = data[id];
+                    const isUnlocked = isCourseApproved(c.title);
+                    
+                    const card = `
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-48 bg-cover bg-center flex items-center justify-center relative" style="background-image: url('${c.thumb || 'https://via.placeholder.com/300'}')">
+                                    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                                    <button onclick="playCourseVideo('${c.video}', '${c.title}', '${id}')" class="relative text-white text-5xl hover:scale-110 transition">
+                                        <i class="fa-solid fa-circle-play"></i>
+                                    </button>
+                                </div>
+                                <div class="p-6">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">${c.category || 'General'}</span>
+                                    <h3 class="text-xl font-bold text-gray-900 mt-3 mb-2">${c.title}</h3>
+                                    <p class="text-gray-600 text-sm mb-4">মূল্য: BDT ${c.price}</p>
+                                </div>
+                            </div>
+                            <div class="p-6 pt-0">
+                                ${isUnlocked ? 
+                                    `<button onclick="playCourseVideo('${c.video}', '${c.title}', '${id}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition"><i class="fa-solid fa-lock-open mr-2"></i>কোর্সটি দেখুন (Unlocked)</button>` :
+                                    `<button onclick="openPaymentModal('${c.title}', ${c.price})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition"><i class="fa-solid fa-lock mr-2"></i>এনরোল করুন (BDT ${c.price})</button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
             });
         }
 
-        // ================= পেমেন্ট সিস্টেম ফাংশনসমূহ =================
-        let selectedCourseName = "";
-        let selectedCoursePrice = "";
-        let currentMethod = "bkash";
+        // Check user order status
+        function isCourseApproved(title) {
+            return userOrders.some(order => order.courseName === title && order.status === "approved");
+        }
+
+        function listenToUserOrders() {
+            if (!currentUser) return;
+            firebase.database().ref('orders').orderByChild('userId').equalTo(currentUser.uid).on('value', (snapshot) => {
+                userOrders = [];
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach(k => userOrders.push(data[k]));
+                }
+                loadCourses();
+            });
+        }
+
+        // Payment System Functions
+        let selectedCourseName = "", selectedCoursePrice = "", currentMethod = "bkash";
 
         function selectMethod(method, number) {
             currentMethod = method;
-            document.querySelectorAll('.method-tab').forEach(tab => {
-                tab.className = "method-tab border border-gray-200 text-gray-600 font-bold py-2 rounded-lg text-sm hover:bg-gray-50";
-            });
-
+            document.querySelectorAll('.method-tab').forEach(tab => tab.className = "method-tab border border-gray-200 text-gray-600 font-bold py-2 rounded-lg text-sm hover:bg-gray-50");
             const activeTab = document.getElementById(`tab-${method}`);
-            if (method === 'bkash') activeTab.className = "method-tab border-2 border-pink-500 bg-pink-50 text-pink-700 font-bold py-2 rounded-lg text-sm";
-            if (method === 'nagad') activeTab.className = "method-tab border-2 border-orange-500 bg-orange-50 text-orange-700 font-bold py-2 rounded-lg text-sm";
-            if (method === 'rocket') activeTab.className = "method-tab border-2 border-purple-500 bg-purple-50 text-purple-700 font-bold py-2 rounded-lg text-sm";
-
+            if (activeTab) activeTab.className = "method-tab border-2 border-blue-500 bg-blue-50 text-blue-700 font-bold py-2 rounded-lg text-sm";
             document.getElementById("methodName").innerText = method.toUpperCase();
             document.getElementById("paymentNumber").innerText = number;
         }
 
         function openPaymentModal(courseName, price) {
+            if (!currentUser) { alert("পেমেন্ট করতে প্রথমে লগইন করুন!"); return; }
             selectedCourseName = courseName;
             selectedCoursePrice = price;
-            
             document.getElementById("modalCourseTitle").innerText = courseName;
             document.getElementById("modalCoursePrice").innerText = `BDT ${price}.00`;
             selectMethod('bkash', '01763019928');
-            
             document.getElementById("paymentModal").classList.remove("hidden");
             document.getElementById("paymentModal").classList.add("flex");
         }
@@ -287,33 +403,23 @@
         }
 
         function copyNumber() {
-            const num = document.getElementById("paymentNumber").innerText;
-            navigator.clipboard.writeText(num);
-            alert("নম্বর কপি হয়েছে: " + num);
+            navigator.clipboard.writeText(document.getElementById("paymentNumber").innerText);
+            alert("নম্বর কপি হয়েছে!");
         }
 
-        async function submitPayment(event) {
-            event.preventDefault();
-
+        async function submitPayment(e) {
+            e.preventDefault();
             const senderNum = document.getElementById("senderNumber").value;
             const trxId = document.getElementById("trxId").value;
-            const user = firebase.auth().currentUser;
-
-            if (!user) {
-                alert("পেমেন্ট করার আগে আপনাকে অবশ্যই লগইন করতে হবে!");
-                return;
-            }
-
             const btn = document.getElementById("submitBtn");
-            btn.innerText = "প্রসেসিং হচ্ছে...";
-            btn.disabled = true;
+
+            btn.innerText = "প্রসেসিং হচ্ছে..."; btn.disabled = true;
 
             try {
-                // Realtime Database-এ ডাটা পুশ করা
                 await firebase.database().ref("orders").push({
-                    userId: user.uid,
-                    userEmail: user.email,
-                    userName: user.displayName || "N/A",
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName || "N/A",
                     courseName: selectedCourseName,
                     price: selectedCoursePrice,
                     paymentMethod: currentMethod,
@@ -323,15 +429,138 @@
                     createdAt: firebase.database.ServerValue.TIMESTAMP
                 });
 
-                alert("আপনার পেমেন্ট তথ্য সফলভাবে জমা হয়েছে! অ্যাডমিন ভেরিফাই করে দ্রুত কোর্স আনলক করে দেবে।");
+                alert("আপনার পেমেন্টটি পেন্ডিং রয়েছে। এডমিন ভেরিফাই করলে আপনার কোর্সটি আনলক হয়ে যাবে।");
                 document.getElementById("paymentForm").reset();
                 closePaymentModal();
-            } catch (error) {
-                alert("কোথাও সমস্যা হয়েছে: " + error.message);
+            } catch (err) {
+                alert("ত্রুটি: " + err.message);
             } finally {
-                btn.innerText = "পেমেন্ট নিশ্চিত করুন";
-                btn.disabled = false;
+                btn.innerText = "পেমেন্ট নিশ্চিত করুন"; btn.disabled = false;
             }
+        }
+
+        // 3-Min Free Preview Video Player Logic
+        function playCourseVideo(videoUrl, title, courseId) {
+            activeVideoCourseId = courseId;
+            document.getElementById('videoModalTitle').innerText = title;
+            const player = document.getElementById('courseVideoPlayer');
+            document.getElementById('videoSource').src = videoUrl;
+            player.load();
+            document.getElementById('videoModal').classList.remove('hidden');
+            document.getElementById('videoModal').classList.add('flex');
+            player.play();
+        }
+
+        function checkVideoPreview(player) {
+            const unlocked = userOrders.some(o => o.status === "approved");
+            // If not unlocked, stop video after 180 seconds (3 mins)
+            if (!unlocked && player.currentTime >= 180) {
+                player.pause();
+                alert("কোর্সের বাকি অংশ দেখতে এখনই Enroll/Buy করুন!");
+                closeVideoModal();
+                openPaymentModal(document.getElementById('videoModalTitle').innerText, 0);
+            }
+        }
+
+        function closeVideoModal() {
+            const player = document.getElementById('courseVideoPlayer');
+            player.pause();
+            document.getElementById('videoModal').classList.add('hidden');
+            document.getElementById('videoModal').classList.remove('flex');
+        }
+
+        // Orders Status Modal
+        function openOrdersModal() {
+            toggleUserDropdown();
+            const list = document.getElementById('ordersList');
+            list.innerHTML = '';
+            
+            if (userOrders.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center">কোনো অর্ডার পাওয়া যায়নি।</p>';
+            } else {
+                userOrders.forEach(o => {
+                    let statusBadge = `<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold">Pending</span>`;
+                    if (o.status === "approved") statusBadge = `<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold">Approved</span>`;
+                    if (o.status === "cancelled") statusBadge = `<span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold">Order Cancelled</span>`;
+
+                    list.innerHTML += `
+                        <div class="p-3 border rounded-lg flex justify-between items-center bg-gray-50">
+                            <div>
+                                <h4 class="font-bold text-gray-800">${o.courseName}</h4>
+                                <p class="text-xs text-gray-500">TrxID: ${o.trxId} | ${o.paymentMethod}</p>
+                            </div>
+                            <div>${statusBadge}</div>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('ordersModal').classList.remove('hidden');
+            document.getElementById('ordersModal').classList.add('flex');
+        }
+
+        function closeOrdersModal() {
+            document.getElementById('ordersModal').classList.add('hidden');
+            document.getElementById('ordersModal').classList.remove('flex');
+        }
+
+        // Admin Panel Logic
+        function openAdminPanel() {
+            toggleUserDropdown();
+            document.getElementById('adminModal').classList.remove('hidden');
+            document.getElementById('adminModal').classList.add('flex');
+            loadAdminOrders();
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('adminModal').classList.remove('flex');
+        }
+
+        function loadAdminOrders() {
+            firebase.database().ref('orders').on('value', (snapshot) => {
+                const list = document.getElementById('adminOrdersList');
+                list.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) return;
+
+                Object.keys(data).forEach(key => {
+                    const o = data[key];
+                    list.innerHTML += `
+                        <div class="p-4 border rounded-xl bg-white shadow-sm flex flex-wrap justify-between items-center">
+                            <div>
+                                <p class="font-bold text-gray-900">${o.courseName} (BDT ${o.price})</p>
+                                <p class="text-xs text-gray-600">User: ${o.userName} (${o.userEmail})</p>
+                                <p class="text-xs text-gray-600">Sender: <b>${o.senderNumber}</b> | TrxID: <b>${o.trxId}</b> (${o.paymentMethod})</p>
+                                <p class="text-xs mt-1">Status: <span class="uppercase font-bold">${o.status}</span></p>
+                            </div>
+                            <div class="flex gap-2 mt-2 md:mt-0">
+                                <button onclick="updateOrderStatus('${key}', 'approved')" class="bg-green-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-green-700">Approve</button>
+                                <button onclick="updateOrderStatus('${key}', 'cancelled')" class="bg-red-600 text-white text-xs px-3 py-1.5 rounded font-bold hover:bg-red-700">Cancel</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function updateOrderStatus(orderKey, newStatus) {
+            firebase.database().ref(`orders/${orderKey}`).update({ status: newStatus });
+            alert(`Order status updated to: ${newStatus}`);
+        }
+
+        function addNewCourse() {
+            const title = document.getElementById('newCourseTitle').value;
+            const price = document.getElementById('newCoursePrice').value;
+            const category = document.getElementById('newCourseCategory').value;
+            const thumb = document.getElementById('newCourseThumb').value;
+            const video = document.getElementById('newCourseVideo').value;
+
+            if (!title || !price) { alert("Title and Price required!"); return; }
+
+            firebase.database().ref('courses').push({
+                title, price, category, thumb, video
+            });
+            alert("New course added successfully!");
         }
     </script>
 </body>
