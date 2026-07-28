@@ -259,8 +259,11 @@
 
         // Admin Email List
         function isUserAdmin(user) {
-            const adminEmails = ["admin@haven.com", "01763019928"];
-            return user && (adminEmails.includes(user.email) || adminEmails.includes(user.displayName));
+            if (!user) return false;
+            const adminEmails = ["cent24y@gmail.com", "01763019928"];
+            const userEmail = (user.email || "").toLowerCase();
+            const userName = (user.displayName || "").toLowerCase();
+            return adminEmails.some(a => a.toLowerCase() === userEmail || a.toLowerCase() === userName);
         }
 
         // Auth Listener
@@ -282,6 +285,8 @@
                 document.getElementById('adminMenuBtn').classList.add('hidden');
             }
             loadCourses();
+            
+            // Auth লোড হওয়ার পর /#ma রুট চেক করবে
             checkMaRoute();
         });
 
@@ -293,6 +298,15 @@
                     if (isUserAdmin(currentUser)) {
                         openAdminPanel();
                     } else {
+                        alert("আপনার একাউন্টটি (" + currentUser.email + ") এডমিন হিসেবে রেজিস্টার্ড নয়!");
+                    }
+                } else {
+                    // লগইন না থাকলে সরাসরি গুগল পপআপ দেখাবে
+                    alert("এডমিন প্যানেলে প্রবেশ করতে প্রথমে আপনার এডমিন একাউন্ট দিয়ে লগইন করুন।");
+                    loginWithGoogle();
+                }
+            }
+        }
                         alert("আপনার একাউন্টটি এডমিন হিসেবে রেজিস্টার্ড নয়!");
                     }
                 } else {
