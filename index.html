@@ -167,7 +167,7 @@
     <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
             <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
-                <h3 class="font-bold text-lg" id="videoModalTitle">কোর্স প্লেয়ার</h3>
+                <h3 class="font-bold text-lg" id="videoModalTitle">কোর্স প্লেয়ার</h3>
                 <button onclick="closeVideoModal()" class="text-gray-400 hover:text-white text-2xl font-bold">&times;</button>
             </div>
             <div class="p-4 bg-black">
@@ -257,6 +257,12 @@
         let supportNumber = "01763019928";
         let activeVideoCourseId = null;
 
+        // Admin Email List
+        function isUserAdmin(user) {
+            const adminEmails = ["admin@haven.com", "01763019928"];
+            return user && (adminEmails.includes(user.email) || adminEmails.includes(user.displayName));
+        }
+
         // Auth Listener
         firebase.auth().onAuthStateChanged((user) => {
             currentUser = user;
@@ -266,8 +272,7 @@
                 document.getElementById('userProfileSection').classList.add('flex');
                 document.getElementById('userImg').src = user.photoURL || "https://via.placeholder.com/40";
                 
-                // Secret Admin Check (e.g., matching email)
-                if (user.email === "admin@haven.com" || user.email === "01763019928") {
+                if (isUserAdmin(user)) {
                     document.getElementById('adminMenuBtn').classList.remove('hidden');
                 }
                 listenToUserOrders();
@@ -277,7 +282,25 @@
                 document.getElementById('adminMenuBtn').classList.add('hidden');
             }
             loadCourses();
+            checkMaRoute();
         });
+
+        // /ma Route Checking Function
+        function checkMaRoute() {
+            const isPathMA = window.location.pathname.endsWith('/ma') || window.location.hash === '#ma';
+            if (isPathMA) {
+                if (currentUser) {
+                    if (isUserAdmin(currentUser)) {
+                        openAdminPanel();
+                    } else {
+                        alert("আপনার একাউন্টটি এডমিন হিসেবে রেজিস্টার্ড নয়!");
+                    }
+                } else {
+                    alert("এডমিন প্যানেলে প্রবেশ করতে প্রথমে লগইন করুন!");
+                    loginWithGoogle();
+                }
+            }
+        }
 
         function loginWithGoogle() {
             firebase.auth().signInWithPopup(provider);
@@ -316,7 +339,6 @@
                 const data = snapshot.val();
 
                 if (!data) {
-                    // Default Initial Courses if Database is Empty
                     const defaultCourses = {
                         c1: { title: "Web Development Mastery", price: 1500, category: "Development", thumb: "https://images.unsplash.com/photo-1587620962725-abab7fe55159", video: "https://www.w3schools.com/html/mov_bbb.mp4" },
                         c2: { title: "Professional Graphic Design", price: 1200, category: "Design", thumb: "https://images.unsplash.com/photo-1626785774573-4b799315345d", video: "https://www.w3schools.com/html/mov_bbb.mp4" }
@@ -357,7 +379,6 @@
             });
         }
 
-        // Check user order status
         function isCourseApproved(title) {
             return userOrders.some(order => order.courseName === title && order.status === "approved");
         }
@@ -429,7 +450,7 @@
                     createdAt: firebase.database.ServerValue.TIMESTAMP
                 });
 
-                alert("আপনার পেমেন্টটি পেন্ডিং রয়েছে। এডমিন ভেরিফাই করলে আপনার কোর্সটি আনলক হয়ে যাবে।");
+                alert("আপনার পেমেন্টটি পেন্ডিং রয়েছে। এডমিন ভেরিফাই করলে আপনার কোর্সটি আনলক হয়ে যাবে।");
                 document.getElementById("paymentForm").reset();
                 closePaymentModal();
             } catch (err) {
@@ -439,7 +460,7 @@
             }
         }
 
-        // 3-Min Free Preview Video Player Logic
+        // Video Player Preview
         function playCourseVideo(videoUrl, title, courseId) {
             activeVideoCourseId = courseId;
             document.getElementById('videoModalTitle').innerText = title;
@@ -453,7 +474,6 @@
 
         function checkVideoPreview(player) {
             const unlocked = userOrders.some(o => o.status === "approved");
-            // If not unlocked, stop video after 180 seconds (3 mins)
             if (!unlocked && player.currentTime >= 180) {
                 player.pause();
                 alert("কোর্সের বাকি অংশ দেখতে এখনই Enroll/Buy করুন!");
@@ -471,7 +491,7 @@
 
         // Orders Status Modal
         function openOrdersModal() {
-            toggleUserDropdown();
+            if (document.getElementById('userDropdown')) document.getElementById('userDropdown').classList.add('hidden');
             const list = document.getElementById('ordersList');
             list.innerHTML = '';
             
@@ -505,7 +525,7 @@
 
         // Admin Panel Logic
         function openAdminPanel() {
-            toggleUserDropdown();
+            if (document.getElementById('userDropdown')) document.getElementById('userDropdown').classList.add('hidden');
             document.getElementById('adminModal').classList.remove('hidden');
             document.getElementById('adminModal').classList.add('flex');
             loadAdminOrders();
