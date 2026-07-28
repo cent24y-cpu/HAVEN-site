@@ -172,7 +172,6 @@
             </div>
             <div class="p-4 bg-black">
                 <video id="courseVideoPlayer" controls class="w-full rounded-lg h-80 bg-black" ontimeupdate="checkVideoPreview(this)">
-                    <source id="videoSource" src="" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
             </div>
@@ -285,8 +284,6 @@
                 document.getElementById('adminMenuBtn').classList.add('hidden');
             }
             loadCourses();
-            
-            // Auth লোড হওয়ার পর /#ma রুট চেক করবে
             checkMaRoute();
         });
 
@@ -301,23 +298,14 @@
                         alert("আপনার একাউন্টটি (" + currentUser.email + ") এডমিন হিসেবে রেজিস্টার্ড নয়!");
                     }
                 } else {
-                    // লগইন না থাকলে সরাসরি গুগল পপআপ দেখাবে
-                    alert("এডমিন প্যানেলে প্রবেশ করতে প্রথমে আপনার এডমিন একাউন্ট দিয়ে লগইন করুন।");
-                    loginWithGoogle();
-                }
-            }
-        }
-                        alert("আপনার একাউন্টটি এডমিন হিসেবে রেজিস্টার্ড নয়!");
-                    }
-                } else {
-                    alert("এডমিন প্যানেলে প্রবেশ করতে প্রথমে লগইন করুন!");
+                    alert("এডমিন প্যানেলে প্রবেশ করতে প্রথমে আপনার এডমিন একাউন্ট দিয়ে লগইন করুন।");
                     loginWithGoogle();
                 }
             }
         }
 
         function loginWithGoogle() {
-            firebase.auth().signInWithPopup(provider);
+            firebase.auth().signInWithPopup(provider).catch(err => alert("Login error: " + err.message));
         }
 
         function logout() {
@@ -349,6 +337,7 @@
         function loadCourses() {
             firebase.database().ref('courses').on('value', (snapshot) => {
                 const container = document.getElementById('courseContainer');
+                if (!container) return;
                 container.innerHTML = '';
                 const data = snapshot.val();
 
@@ -474,12 +463,12 @@
             }
         }
 
-        // Video Player Preview
+        // Video Player Preview Fix
         function playCourseVideo(videoUrl, title, courseId) {
             activeVideoCourseId = courseId;
             document.getElementById('videoModalTitle').innerText = title;
             const player = document.getElementById('courseVideoPlayer');
-            document.getElementById('videoSource').src = videoUrl;
+            player.src = videoUrl;
             player.load();
             document.getElementById('videoModal').classList.remove('hidden');
             document.getElementById('videoModal').classList.add('flex');
@@ -490,7 +479,7 @@
             const unlocked = userOrders.some(o => o.status === "approved");
             if (!unlocked && player.currentTime >= 180) {
                 player.pause();
-                alert("কোর্সের বাকি অংশ দেখতে এখনই Enroll/Buy করুন!");
+                alert("৩ মিনিটের ফ্রী ট্রায়াল শেষ! কোর্সের বাকি অংশ দেখতে এখনই Enroll করুন।");
                 closeVideoModal();
                 openPaymentModal(document.getElementById('videoModalTitle').innerText, 0);
             }
