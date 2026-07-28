@@ -21,6 +21,7 @@
             <!-- Navigation Menu -->
             <nav class="hidden md:flex items-center space-x-6 text-gray-700 font-medium">
                 <a href="#courses" class="hover:text-blue-600 transition">Courses</a>
+                <a href="#about" class="hover:text-blue-600 transition">About Us</a>
                 <a href="javascript:void(0)" onclick="openSupport()" class="hover:text-blue-600 transition">Customer Support</a>
                 
                 <!-- Phone Number -->
@@ -46,12 +47,20 @@
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
 
-                    <!-- Dropdown Menu -->
-                    <div id="userDropdown" class="hidden absolute right-0 top-12 bg-white shadow-xl rounded-xl border border-gray-100 w-52 py-2 z-50">
-                        <a href="javascript:void(0)" onclick="openOrdersModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"><i class="fa-solid fa-receipt mr-2 text-blue-600"></i> My Orders / Status</a>
-                        <a href="javascript:void(0)" onclick="openAdminPanel()" id="adminMenuBtn" class="hidden block px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50"><i class="fa-solid fa-user-shield mr-2"></i> Admin Panel</a>
+                    <!-- Dropdown Menu with 7 Custom Buttons -->
+                    <div id="userDropdown" class="hidden absolute right-0 top-12 bg-white shadow-2xl rounded-2xl border border-gray-100 w-60 py-2 z-50">
+                        <div class="px-4 py-2 border-b border-gray-100">
+                            <p id="dropdownUserName" class="font-bold text-gray-800 text-sm truncate">User Name</p>
+                            <p id="dropdownUserEmail" class="text-xs text-gray-500 truncate">user@gmail.com</p>
+                        </div>
+                        <a href="javascript:void(0)" onclick="openOrdersModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"><i class="fa-solid fa-receipt mr-2.5 text-blue-600"></i> My Orders / Status</a>
+                        <a href="javascript:void(0)" onclick="openProfileModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"><i class="fa-solid fa-user-pen mr-2.5 text-indigo-600"></i> Edit Profile</a>
+                        <a href="javascript:void(0)" onclick="alert('কোর্স সম্পন্ন করার পর আপনার সার্টিফিকেট এখানে জমা হবে।')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"><i class="fa-solid fa-certificate mr-2.5 text-amber-500"></i> My Certificates</a>
+                        <a href="javascript:void(0)" onclick="alert('আপনার বুকমার্ক করা কোর্সগুলোর তালিকা আপডেট হচ্ছে।')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"><i class="fa-solid fa-bookmark mr-2.5 text-purple-600"></i> Bookmarked Courses</a>
+                        <a href="javascript:void(0)" onclick="alert('নতুন নোটিশ: আগামী শুক্রবার বিশেষ ক্যারিয়ার গাইডলাইন ওয়েবিনার অনুষ্ঠিত হবে।')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"><i class="fa-solid fa-bullhorn mr-2.5 text-teal-600"></i> Notice Board</a>
+                        <a href="javascript:void(0)" onclick="promptAdminPassword()" id="adminMenuBtn" class="hidden block px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-50 transition"><i class="fa-solid fa-user-shield mr-2.5"></i> Admin Panel</a>
                         <hr class="my-1">
-                        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50"><i class="fa-solid fa-right-from-bracket mr-2"></i> Logout</button>
+                        <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition font-semibold"><i class="fa-solid fa-right-from-bracket mr-2.5"></i> Logout</button>
                     </div>
                 </div>
                 
@@ -64,13 +73,19 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Active Users Stat -->
     <section class="bg-[#1e3a8a] text-white py-20 px-6 md:px-12">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 items-center gap-8">
             <div class="md:col-span-8 text-left">
-                <span class="inline-block bg-blue-500/30 text-blue-200 border border-blue-400/30 text-xs font-semibold px-3 py-1 rounded-full mb-4">
-                    🚀 সেরা লার্নিং প্ল্যাটফর্ম
-                </span>
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <span class="bg-blue-500/30 text-blue-200 border border-blue-400/30 text-xs font-semibold px-3 py-1 rounded-full">
+                        🚀 সেরা লার্নিং প্ল্যাটফর্ম
+                    </span>
+                    <span class="bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span id="activeUserCount">1,250+</span> সক্রিয় শিক্ষার্থী
+                    </span>
+                </div>
                 <h1 class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">
                     Haven Academy নিয়ে এসেছে আধুনিক টাইপভিত্তিক শেখার সুযোগ!
                 </h1>
@@ -107,13 +122,72 @@
         </div>
 
         <div id="courseContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Dynamically Loaded Courses Will Appear Here -->
+            <!-- Dynamic Courses Load Here -->
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="bg-slate-100 py-16 px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div>
+                <span class="text-blue-600 font-bold text-sm tracking-widest uppercase">About Haven Academy</span>
+                <h2 class="text-3xl font-extrabold text-gray-900 mt-2 mb-4">আমাদের লক্ষ্য ও উদ্দেশ্য</h2>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    Haven Academy হলো একটি মানসম্মত ও আধুনিক ই-লার্নিং প্ল্যাটফর্ম। বর্তমান ডিজিটাল যুগে তরুণ সমাজকে আইটি ও ডিজিটাল দক্ষতার মাধ্যমে স্বাবলম্বী করাই আমাদের মূল উদ্দেশ্য।
+                </p>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    আমরা সহজ বাংলা ভাষায় আন্তর্জাতিক মানের কোর্স কনটেন্ট প্রদান করি, যাতে যে কেউ ঘরে বসে সুবিধাজনক সময়ে নতুন স্কিল শিখে ফ্রিল্যান্সিং বা জব মার্কেটে ক্যারিয়ার গড়তে পারে।
+                </p>
+                <div class="flex gap-6">
+                    <div>
+                        <h4 class="text-2xl font-bold text-blue-600">100%</h4>
+                        <p class="text-xs text-gray-500">প্র্যাকটিক্যাল লার্নিং</p>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-bold text-blue-600">24/7</h4>
+                        <p class="text-xs text-gray-500">মেন্টর সাপোর্ট</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">কেন হ্যাভেন একাডেমি বেছে নেবেন?</h3>
+                <ul class="space-y-3 text-gray-600 text-sm">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-500"></i> সহজ ও আধুনিক মডিউলে সাজানো ভিডিও কোর্স</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-500"></i> প্রতিটি কোর্সে ৩ মিনিটের ফ্রী ট্রায়াল সুবিধা</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-500"></i> বিকাশ, নগদ ও রকেটে দ্রুত পেমেন্ট সিস্টেম</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-500"></i> সরাসরি হোয়াটসঅ্যাপ কাস্টমার সাপোর্ট</li>
+                </ul>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center border-t border-gray-800">
-        <p>Copyright © 2026 <span class="text-white font-bold">Haven Academy</span>. All rights reserved.</p>
+    <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-left">
+            <div>
+                <div class="flex items-center space-x-2 mb-3">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-blue-500"></i>
+                    <span class="text-xl font-bold text-white">Haven Academy</span>
+                </div>
+                <p class="text-xs leading-relaxed text-gray-400">আপনার দক্ষতাকে সমৃদ্ধ করতে আমরা আছি আপনার পাশে। শিখুন, জানুন এবং নিজেকে গড়ুন।</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 text-sm">Quick Links</h4>
+                <ul class="space-y-1.5 text-xs">
+                    <li><a href="#courses" class="hover:text-white transition">All Courses</a></li>
+                    <li><a href="#about" class="hover:text-white transition">About Us</a></li>
+                    <li><a href="javascript:void(0)" onclick="openSupport()" class="hover:text-white transition">Support Center</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 text-sm">Contact Support</h4>
+                <p class="text-xs text-gray-400 mb-1"><i class="fa-solid fa-phone mr-2 text-blue-400"></i> 01763019928</p>
+                <p class="text-xs text-gray-400"><i class="fa-brands fa-whatsapp mr-2 text-emerald-400"></i> WhatsApp Support Available</p>
+            </div>
+        </div>
+        <div class="text-center text-xs border-t border-gray-800 pt-6">
+            <p>Copyright © 2026 <span class="text-white font-bold">Haven Academy</span>. All rights reserved.</p>
+        </div>
     </footer>
 
     <!-- Payment Modal -->
@@ -163,7 +237,22 @@
         </div>
     </div>
 
-    <!-- Video Player Modal with 3-Min Auto Lock Preview -->
+    <!-- Edit Profile Modal -->
+    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl">
+            <h3 class="font-bold text-lg text-gray-800 mb-4">Profile Customize</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="text-xs font-semibold text-gray-600">Full Name</label>
+                    <input type="text" id="profileNameInput" class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button onclick="saveProfileChanges()" class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-blue-700">Save Changes</button>
+                <button onclick="closeProfileModal()" class="w-full bg-gray-200 text-gray-700 font-bold py-2 rounded-lg text-sm hover:bg-gray-300">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
     <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
             <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
@@ -185,13 +274,11 @@
                 <h3 class="font-bold text-xl text-gray-900">My Orders / Status</h3>
                 <button onclick="closeOrdersModal()" class="text-gray-400 hover:text-black text-2xl font-bold">&times;</button>
             </div>
-            <div id="ordersList" class="space-y-3 max-h-80 overflow-y-auto">
-                <!-- Orders dynamically rendered -->
-            </div>
+            <div id="ordersList" class="space-y-3 max-h-80 overflow-y-auto"></div>
         </div>
     </div>
 
-    <!-- Admin Panel Modal -->
+    <!-- Password Protected Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
@@ -208,35 +295,33 @@
                 </div>
             </div>
 
-            <!-- Add Course Section -->
+            <!-- Add Course Section with Validation -->
             <div class="mb-6 bg-gray-50 p-4 rounded-xl border">
                 <h4 class="font-bold text-gray-800 mb-3">Add New Course</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                    <input type="text" id="newCourseTitle" placeholder="Course Title" class="px-3 py-2 border rounded-lg">
-                    <input type="number" id="newCoursePrice" placeholder="Price (BDT)" class="px-3 py-2 border rounded-lg">
+                    <input type="text" id="newCourseTitle" placeholder="Course Title *" class="px-3 py-2 border rounded-lg">
+                    <input type="number" id="newCoursePrice" placeholder="Price (BDT) *" class="px-3 py-2 border rounded-lg">
                     <input type="text" id="newCourseCategory" placeholder="Category (e.g. Development)" class="px-3 py-2 border rounded-lg">
-                    <input type="text" id="newCourseThumb" placeholder="Thumbnail URL" class="px-3 py-2 border rounded-lg">
-                    <input type="text" id="newCourseVideo" placeholder="Video MP4 URL" class="px-3 py-2 border rounded-lg col-span-2">
+                    <input type="text" id="newCourseThumb" placeholder="Thumbnail Image URL *" class="px-3 py-2 border rounded-lg border-amber-300">
+                    <input type="text" id="newCourseVideo" placeholder="Video MP4 URL *" class="px-3 py-2 border rounded-lg col-span-2 border-amber-300">
                 </div>
-                <button onclick="addNewCourse()" class="bg-emerald-600 text-white font-bold px-5 py-2 rounded-lg">Add Course</button>
+                <button onclick="addNewCourse()" class="bg-emerald-600 text-white font-bold px-5 py-2 rounded-lg shadow hover:bg-emerald-700 transition">Add Course</button>
             </div>
 
             <!-- Order Approvals Section -->
             <div>
                 <h4 class="font-bold text-gray-800 mb-3">Pending Orders Verification</h4>
-                <div id="adminOrdersList" class="space-y-3">
-                    <!-- Admin Orders Rendered Here -->
-                </div>
+                <div id="adminOrdersList" class="space-y-3"></div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK (Compat Version) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
-    <!-- Main Logic Script -->
+    <!-- Main JavaScript Logic -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyA24C0FStsPpHI9dDcJ4V5a5T5Ab2Ev4i0",
@@ -254,9 +339,9 @@
         let currentUser = null;
         let userOrders = [];
         let supportNumber = "01763019928";
-        let activeVideoCourseId = null;
+        let isAdminAuthenticated = false;
 
-        // Admin Email List
+        // Admin Email List Check
         function isUserAdmin(user) {
             if (!user) return false;
             const adminEmails = ["cent24y@gmail.com", "01763019928"];
@@ -272,7 +357,9 @@
                 document.getElementById('authSection').classList.add('hidden');
                 document.getElementById('userProfileSection').classList.remove('hidden');
                 document.getElementById('userProfileSection').classList.add('flex');
-                document.getElementById('userImg').src = user.photoURL || "https://via.placeholder.com/40";
+                document.getElementById('userImg').src = user.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(user.displayName || "User");
+                document.getElementById('dropdownUserName').innerText = user.displayName || "Student";
+                document.getElementById('dropdownUserEmail').innerText = user.email || "";
                 
                 if (isUserAdmin(user)) {
                     document.getElementById('adminMenuBtn').classList.remove('hidden');
@@ -287,19 +374,32 @@
             checkMaRoute();
         });
 
-        // /ma Route Checking Function
+        // Prompt Secret Admin Password
+        function promptAdminPassword() {
+            if (isAdminAuthenticated) {
+                openAdminPanel();
+                return;
+            }
+            const pwd = prompt("এডমিন প্যানেলে প্রবেশ করতে সিক্রেট পাসওয়ার্ড দিন:");
+            if (pwd === "admin1234") { // Secret Admin Password
+                isAdminAuthenticated = true;
+                openAdminPanel();
+            } else if (pwd !== null) {
+                alert("ভুল পাসওয়ার্ড! প্রবেশাধিকার সংরক্ষিত।");
+            }
+        }
+
+        // Route Check for /#ma
         function checkMaRoute() {
             const isPathMA = window.location.pathname.endsWith('/ma') || window.location.hash === '#ma';
             if (isPathMA) {
-                if (currentUser) {
-                    if (isUserAdmin(currentUser)) {
-                        openAdminPanel();
-                    } else {
-                        alert("আপনার একাউন্টটি (" + currentUser.email + ") এডমিন হিসেবে রেজিস্টার্ড নয়!");
-                    }
-                } else {
-                    alert("এডমিন প্যানেলে প্রবেশ করতে প্রথমে আপনার এডমিন একাউন্ট দিয়ে লগইন করুন।");
+                if (currentUser && isUserAdmin(currentUser)) {
+                    promptAdminPassword();
+                } else if (!currentUser) {
+                    alert("এডমিন প্যানেলে প্রবেশ করতে এডমিন একাউন্ট দিয়ে লগইন করুন।");
                     loginWithGoogle();
+                } else {
+                    alert("আপনার একাউন্টটি এডমিন হিসেবে রেজিস্টার্ড নয়!");
                 }
             }
         }
@@ -316,7 +416,7 @@
             document.getElementById('userDropdown').classList.toggle('hidden');
         }
 
-        // Support Option
+        // Support
         function openSupport() {
             window.open(`https://wa.me/88${supportNumber}`, '_blank');
         }
@@ -333,7 +433,7 @@
             if (s.val()) supportNumber = s.val();
         });
 
-        // Load Dynamic Courses
+        // Load Courses Dynamic
         function loadCourses() {
             firebase.database().ref('courses').on('value', (snapshot) => {
                 const container = document.getElementById('courseContainer');
@@ -398,7 +498,58 @@
             });
         }
 
-        // Payment System Functions
+        // Add Course Validation Check
+        function addNewCourse() {
+            const title = document.getElementById('newCourseTitle').value;
+            const price = document.getElementById('newCoursePrice').value;
+            const category = document.getElementById('newCourseCategory').value;
+            const thumb = document.getElementById('newCourseThumb').value;
+            const video = document.getElementById('newCourseVideo').value;
+
+            if (!title || !price) {
+                alert("Course Title এবং Price ঘর পূরণ করা বাধ্যতামূলক!");
+                return;
+            }
+            if (!thumb || !video) {
+                alert("Thumbnail Image URL এবং Video MP4 URL ছাড়া নতুন কোর্স যোগ করা যাবে না!");
+                return;
+            }
+
+            firebase.database().ref('courses').push({
+                title, price, category, thumb, video
+            });
+            alert("নতুন কোর্স সফলভাবে যোগ হয়েছে!");
+            document.getElementById('newCourseTitle').value = '';
+            document.getElementById('newCoursePrice').value = '';
+            document.getElementById('newCourseThumb').value = '';
+            document.getElementById('newCourseVideo').value = '';
+        }
+
+        // Profile Modal
+        function openProfileModal() {
+            toggleUserDropdown();
+            if (currentUser) document.getElementById('profileNameInput').value = currentUser.displayName || "";
+            document.getElementById('profileModal').classList.remove('hidden');
+            document.getElementById('profileModal').classList.add('flex');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+            document.getElementById('profileModal').classList.remove('flex');
+        }
+
+        function saveProfileChanges() {
+            const newName = document.getElementById('profileNameInput').value;
+            if (currentUser && newName) {
+                currentUser.updateProfile({ displayName: newName }).then(() => {
+                    alert("প্রোফাইল নেম আপডেট করা হয়েছে!");
+                    closeProfileModal();
+                    window.location.reload();
+                });
+            }
+        }
+
+        // Payment System
         let selectedCourseName = "", selectedCoursePrice = "", currentMethod = "bkash";
 
         function selectMethod(method, number) {
@@ -463,9 +614,8 @@
             }
         }
 
-        // Video Player Preview Fix
+        // Video Player Preview
         function playCourseVideo(videoUrl, title, courseId) {
-            activeVideoCourseId = courseId;
             document.getElementById('videoModalTitle').innerText = title;
             const player = document.getElementById('courseVideoPlayer');
             player.src = videoUrl;
@@ -569,21 +719,6 @@
         function updateOrderStatus(orderKey, newStatus) {
             firebase.database().ref(`orders/${orderKey}`).update({ status: newStatus });
             alert(`Order status updated to: ${newStatus}`);
-        }
-
-        function addNewCourse() {
-            const title = document.getElementById('newCourseTitle').value;
-            const price = document.getElementById('newCoursePrice').value;
-            const category = document.getElementById('newCourseCategory').value;
-            const thumb = document.getElementById('newCourseThumb').value;
-            const video = document.getElementById('newCourseVideo').value;
-
-            if (!title || !price) { alert("Title and Price required!"); return; }
-
-            firebase.database().ref('courses').push({
-                title, price, category, thumb, video
-            });
-            alert("New course added successfully!");
         }
     </script>
 </body>
