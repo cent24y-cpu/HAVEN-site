@@ -211,15 +211,16 @@
     <!-- Firebase SDK (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <!-- JavaScript Logic -->
     <script>
-        // আপনার Firebase Configuration
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA24C0FStsPpHI9dDcJ4V5a5T5Ab2Ev4i0",
             authDomain: "haven-c410b.firebaseapp.com",
+            databaseURL: "https://haven-c410b-default-rtdb.firebaseio.com",
             projectId: "haven-c410b",
             storageBucket: "haven-c410b.firebasestorage.app",
             messagingSenderId: "165198745018",
@@ -227,14 +228,14 @@
             measurementId: "G-H4SJ1GFZ5M"
         };
 
-        // Firebase ইনিশিয়ালাইজেশন
+        // Firebase Initialization
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
 
         // Google Provider
         const provider = new firebase.auth.GoogleAuthProvider();
 
-        // গুগল লগইন ফাংশন
+        // Google Login
         function loginWithGoogle() {
             firebase.auth().signInWithPopup(provider)
             .then((result) => {
@@ -308,7 +309,8 @@
             btn.disabled = true;
 
             try {
-                await firebase.firestore().collection("orders").add({
+                // Realtime Database-এ ডাটা পুশ করা
+                await firebase.database().ref("orders").push({
                     userId: user.uid,
                     userEmail: user.email,
                     userName: user.displayName || "N/A",
@@ -318,7 +320,7 @@
                     senderNumber: senderNum,
                     trxId: trxId,
                     status: "pending",
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
                 });
 
                 alert("আপনার পেমেন্ট তথ্য সফলভাবে জমা হয়েছে! অ্যাডমিন ভেরিফাই করে দ্রুত কোর্স আনলক করে দেবে।");
